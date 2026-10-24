@@ -1,5 +1,5 @@
 const taskInput = document.getElementById('new-task');
-const addButton = document.getElementsByTagName('button')[0];
+const addButton = document.getElementById('add-button');
 const incompleteTask = document.getElementById('incomplete-tasks');
 const completedTasks = document.getElementById('completed-tasks');
 
@@ -90,10 +90,10 @@ const bindTaskEvents = function (taskListItem, checkBoxEventHandler) {
   checkBox.addEventListener('change', checkBoxEventHandler);
 };
 
-for (let i = 0; i < incompleteTask.children.length; i++) {
-  bindTaskEvents(incompleteTask.children[i], taskCompleted);
+for (const item of incompleteTask.children) {
+  bindTaskEvents(item, taskCompleted);
 }
 
-for (let i = 0; i < completedTasks.children.length; i++) {
-  bindTaskEvents(completedTasks.children[i], taskIncomplete);
+for (const item of completedTasks.children) {
+  bindTaskEvents(item, taskIncomplete);
 }
