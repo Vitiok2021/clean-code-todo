@@ -1,6 +1,6 @@
 const taskInput = document.getElementById('new-task');
 const addButton = document.getElementById('add-button');
-const incompleteTask = document.getElementById('incomplete-tasks');
+const incompletedTask = document.getElementById('incomplete-tasks');
 const completedTasks = document.getElementById('completed-tasks');
 
 const createNewTaskElement = function (taskString) {
@@ -37,8 +37,8 @@ const createNewTaskElement = function (taskString) {
 const addTask = function () {
   if (!taskInput.value) return;
   const listItem = createNewTaskElement(taskInput.value);
-  incompleteTask.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
+  incompletedTask.appendChild(listItem);
+  bindTaskEvents(listItem);
   taskInput.value = '';
 };
 
@@ -66,34 +66,28 @@ const deleteTask = function () {
   ul.removeChild(listItem);
 };
 
-const taskCompleted = function () {
+function toggleTask() {
   const listItem = this.parentNode;
-  completedTasks.appendChild(listItem);
-  bindTaskEvents(listItem, taskIncomplete);
-};
-
-const taskIncomplete = function () {
-  const listItem = this.parentNode;
-  incompleteTask.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
-};
+  const targetList = this.checked ? completedTasks : incompletedTask;
+  targetList.appendChild(listItem);
+}
 
 addButton.addEventListener('click', addTask);
 
-const bindTaskEvents = function (taskListItem, checkBoxEventHandler) {
+const bindTaskEvents = function (taskListItem) {
   const checkBox = taskListItem.querySelector('input[type=checkbox]');
   const editButton = taskListItem.querySelector('button.edit');
   const deleteButton = taskListItem.querySelector('button.delete');
 
   editButton.addEventListener('click', editTask);
   deleteButton.addEventListener('click', deleteTask);
-  checkBox.addEventListener('change', checkBoxEventHandler);
+  checkBox.addEventListener('change', toggleTask);
 };
 
-for (const item of incompleteTask.children) {
-  bindTaskEvents(item, taskCompleted);
+for (const item of incompletedTask.children) {
+  bindTaskEvents(item);
 }
 
 for (const item of completedTasks.children) {
-  bindTaskEvents(item, taskIncomplete);
+  bindTaskEvents(item);
 }
